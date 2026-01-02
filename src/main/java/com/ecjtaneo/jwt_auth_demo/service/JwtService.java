@@ -14,7 +14,7 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    @Value("${spring.jwt.xd}")
+    @Value("${spring.jwt.secret}")
     private String jwtKey;
     private final Date expiry = new Date(System.currentTimeMillis() + 15 * 60 * 1000); //15 mins
     private SecretKey secretKey;
