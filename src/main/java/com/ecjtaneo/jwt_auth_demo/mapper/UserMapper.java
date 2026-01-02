@@ -1,6 +1,7 @@
 package com.ecjtaneo.jwt_auth_demo.mapper;
 
 import com.ecjtaneo.jwt_auth_demo.dto.request.UserRegisterDto;
+import com.ecjtaneo.jwt_auth_demo.dto.response.UserDto;
 import com.ecjtaneo.jwt_auth_demo.model.User;
 
 public class UserMapper {
@@ -12,4 +13,7 @@ public class UserMapper {
         return user;
     }
 
+    public static UserDto toDto(User entity) {
+        return new UserDto(entity.getUsername(), entity.getCreated_at());
+    }
 }
