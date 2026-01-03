@@ -2,6 +2,7 @@ package com.ecjtaneo.jwt_auth_demo.service;
 
 import com.ecjtaneo.jwt_auth_demo.dto.request.UserRegisterDto;
 import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
+import com.ecjtaneo.jwt_auth_demo.exception.ResourceConflictException;
 import com.ecjtaneo.jwt_auth_demo.mapper.UserMapper;
 import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.repository.UserRepository;
@@ -19,6 +20,10 @@ public class UserService {
     }
 
     public MessageResponse add(UserRegisterDto dto) {
+        if(userRepo.existsByUsername(dto.username())) {
+            throw new ResourceConflictException("Username already exists");
+        }
+
         User user = UserMapper.toEntity(dto);
         user.setUsername(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
