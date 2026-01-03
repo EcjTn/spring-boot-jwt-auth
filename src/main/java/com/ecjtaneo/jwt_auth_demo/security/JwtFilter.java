@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filter) throws ServletException, IOException {
         String authorizationHeader = req.getHeader("Authorization");
         if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ") || SecurityContextHolder.getContext().getAuthentication() != null) {
-            filter.doFilter(req, res);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 

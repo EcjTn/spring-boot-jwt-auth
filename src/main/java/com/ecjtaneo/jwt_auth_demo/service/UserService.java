@@ -6,6 +6,8 @@ import com.ecjtaneo.jwt_auth_demo.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private UserRepository userRepo;
@@ -22,6 +24,10 @@ public class UserService {
 
     public boolean existsByUsername(String username) {
         return userRepo.existsByUsername(username);
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 
 }
