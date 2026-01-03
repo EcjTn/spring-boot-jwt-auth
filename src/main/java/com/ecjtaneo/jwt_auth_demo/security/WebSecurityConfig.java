@@ -16,6 +16,7 @@ public class WebSecurityConfig {
         this.jwtFilter = jwtFilter;
     }
 
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
                 .cors(cors -> {})
@@ -24,10 +25,10 @@ public class WebSecurityConfig {
                 .logout(l -> l.disable())
                 .httpBasic(h -> h.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(a -> a
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
