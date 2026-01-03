@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({HttpMessageNotReadableException.class, MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public MessageResponse handleBadRequest(Exception ex) {
+    public MessageResponse handleValidationErrors(Exception ex) {
         return new MessageResponse("Request body is missing or invalid");
     }
 
