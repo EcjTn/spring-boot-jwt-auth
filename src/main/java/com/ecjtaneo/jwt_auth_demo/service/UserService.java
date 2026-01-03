@@ -1,8 +1,10 @@
 package com.ecjtaneo.jwt_auth_demo.service;
 
 import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
+import com.ecjtaneo.jwt_auth_demo.exception.ResourceConflictException;
 import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +20,12 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User save(User user) {
+    @Transactional
+    public User create(User user) {
+        if(userRepo.existsByUsername(user.getUsername())) {
+            throw new ResourceConflictException("Username already taken");
+        }
         return userRepo.save(user);
-    }
-
-    public boolean existsByUsername(String username) {
-        return userRepo.existsByUsername(username);
     }
 
     public Optional<User> findByUsername(String username) {
