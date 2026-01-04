@@ -8,6 +8,7 @@ import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.repository.RefreshTokenRepository;
 import com.ecjtaneo.jwt_auth_demo.security.RefreshTokenService;
 import com.ecjtaneo.jwt_auth_demo.security.UserDetailsImpl;
+import com.ecjtaneo.jwt_auth_demo.service.dto.LoginResult;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -48,7 +49,7 @@ public class AuthService {
         return new MessageResponse("Successfully registered.");
     }
 
-    public MessageResponse login(AuthRequestDto dto) {
+    public LoginResult login(AuthRequestDto dto) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         Authentication authentication = authenticationManager.authenticate(token);
 
@@ -56,9 +57,9 @@ public class AuthService {
         User user = userDetails.getUser();
         String sub = user.getId().toString();
 
-        String jwt = jwtService.generate(sub);
+        String accessToken = jwtService.generate(sub);
         String refreshToken = refreshTokenService.generate(user).getToken();
 
-        return new MessageResponse(jwt);
+        return new LoginResult(accessToken, refreshToken);
     }
 }
