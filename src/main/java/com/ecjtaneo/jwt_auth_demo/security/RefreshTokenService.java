@@ -18,12 +18,15 @@ public class RefreshTokenService {
         this.refreshTokenRepo = refreshTokenRepo;
     }
 
+    public void save(RefreshToken refreshToken) {
+        refreshTokenRepo.save(refreshToken);
+    }
+
     public RefreshToken generate(User user) {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUser(user);
         refreshToken.setToken(UUID.randomUUID().toString());
 
-        refreshTokenRepo.save(refreshToken);
         return refreshToken;
     }
 

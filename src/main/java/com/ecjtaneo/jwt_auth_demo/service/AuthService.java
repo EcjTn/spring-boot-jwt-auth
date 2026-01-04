@@ -5,18 +5,17 @@ import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
 import com.ecjtaneo.jwt_auth_demo.mapper.UserMapper;
 import com.ecjtaneo.jwt_auth_demo.model.RefreshToken;
 import com.ecjtaneo.jwt_auth_demo.model.User;
-import com.ecjtaneo.jwt_auth_demo.repository.RefreshTokenRepository;
 import com.ecjtaneo.jwt_auth_demo.security.RefreshTokenService;
 import com.ecjtaneo.jwt_auth_demo.security.UserDetailsImpl;
-import com.ecjtaneo.jwt_auth_demo.service.dto.LoginResult;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.ResponseCookie;
+import com.ecjtaneo.jwt_auth_demo.service.dto.AuthTokens;
+import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -49,7 +48,7 @@ public class AuthService {
         return new MessageResponse("Successfully registered.");
     }
 
-    public LoginResult login(AuthRequestDto dto) {
+    public AuthTokens login(AuthRequestDto dto) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         Authentication authentication = authenticationManager.authenticate(token);
 
@@ -58,8 +57,26 @@ public class AuthService {
         String sub = user.getId().toString();
 
         String accessToken = jwtService.generate(sub);
-        String refreshToken = refreshTokenService.generate(user).getToken();
+        RefreshToken refreshTokenObj = refreshTokenService.generate(user);
+        String refreshToken = refreshTokenObj.getToken();
 
-        return new LoginResult(accessToken, refreshToken);
+        refreshTokenService.save(refreshTokenObj);
+
+        return new AuthTokens(accessToken, refreshToken);
+    }
+
+    @Transactional
+    public AuthTokens refresh(String oldRefreshToken) {
+        RefreshToken tokenRecord = refreshTokenService.validate(oldRefreshToken);
+        User user = tokenRecord.getUser();
+        String sub = user.getId().toString();
+
+        String accessToken = jwtService.generate(sub);
+
+        String refreshToken = UUID.randomUUID().toString();
+        tokenRecord.setToken(refreshToken);
+        tokenRecord.setExpires_at(LocalDateTime.now().plusDays(30));
+
+        return new AuthTokens(accessToken, refreshToken);
     }
 }

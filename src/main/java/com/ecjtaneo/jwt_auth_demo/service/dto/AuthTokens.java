@@ -1,6 +1,6 @@
 package com.ecjtaneo.jwt_auth_demo.service.dto;
 
-public record LoginResult(
+public record AuthTokens(
         String accessToken,
         String refreshToken
 ) {}

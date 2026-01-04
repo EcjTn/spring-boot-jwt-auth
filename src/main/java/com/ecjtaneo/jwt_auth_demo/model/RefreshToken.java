@@ -21,5 +21,5 @@ public class RefreshToken {
     private String token;
 
     private final LocalDateTime created_at = LocalDateTime.now();
-    private final LocalDateTime expires_at = LocalDateTime.now().plusDays(30);
+    private LocalDateTime expires_at = LocalDateTime.now().plusDays(30);
 }
