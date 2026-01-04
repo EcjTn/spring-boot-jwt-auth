@@ -5,7 +5,6 @@ import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
 import com.ecjtaneo.jwt_auth_demo.mapper.UserMapper;
 import com.ecjtaneo.jwt_auth_demo.model.RefreshToken;
 import com.ecjtaneo.jwt_auth_demo.model.User;
-import com.ecjtaneo.jwt_auth_demo.security.RefreshTokenService;
 import com.ecjtaneo.jwt_auth_demo.security.UserDetailsImpl;
 import com.ecjtaneo.jwt_auth_demo.service.payload.AuthTokens;
 import jakarta.transaction.Transactional;

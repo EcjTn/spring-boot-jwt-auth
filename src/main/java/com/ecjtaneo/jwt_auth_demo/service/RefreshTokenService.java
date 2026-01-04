@@ -1,4 +1,4 @@
-package com.ecjtaneo.jwt_auth_demo.security;
+package com.ecjtaneo.jwt_auth_demo.service;
 
 import com.ecjtaneo.jwt_auth_demo.exception.RefreshTokenException;
 import com.ecjtaneo.jwt_auth_demo.model.RefreshToken;
