@@ -22,5 +22,5 @@ public class User {
     private final LocalDateTime created_at = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<RefreshToken> refreshToken;
+    private List<RefreshToken> refreshTokens;
 }

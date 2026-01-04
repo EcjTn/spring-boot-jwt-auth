@@ -3,7 +3,9 @@ package com.ecjtaneo.jwt_auth_demo.service;
 import com.ecjtaneo.jwt_auth_demo.dto.request.AuthRequestDto;
 import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
 import com.ecjtaneo.jwt_auth_demo.mapper.UserMapper;
+import com.ecjtaneo.jwt_auth_demo.model.RefreshToken;
 import com.ecjtaneo.jwt_auth_demo.model.User;
+import com.ecjtaneo.jwt_auth_demo.repository.RefreshTokenRepository;
 import com.ecjtaneo.jwt_auth_demo.security.UserDetailsImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,12 +21,20 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtService jwtService;
+    private RefreshTokenRepository refreshTokenRepository;
 
-    public AuthService(UserService userService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtService jwtService) {
+    public AuthService(
+            UserService userService,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager,
+            JwtService jwtService,
+            RefreshTokenRepository refreshTokenRepository
+    ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     public MessageResponse register(AuthRequestDto dto) {
