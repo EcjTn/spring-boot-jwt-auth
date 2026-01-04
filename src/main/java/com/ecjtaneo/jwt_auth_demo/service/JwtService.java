@@ -16,7 +16,6 @@ public class JwtService {
 
     @Value("${spring.jwt.secret}")
     private String jwtKey;
-    private final Date expiry = new Date(System.currentTimeMillis() + 15 * 60 * 1000); //15 mins
     private SecretKey secretKey;
 
     @PostConstruct
@@ -25,6 +24,8 @@ public class JwtService {
     }
 
     public String generate(String sub) {
+        Date expiry = new Date(System.currentTimeMillis() + 15 * 60 * 1000); //15 mins
+
         return Jwts
                 .builder()
                 .signWith(secretKey)

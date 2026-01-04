@@ -1,23 +1,33 @@
 package com.ecjtaneo.jwt_auth_demo.service;
 
-import com.ecjtaneo.jwt_auth_demo.dto.request.UserRegisterDto;
+import com.ecjtaneo.jwt_auth_demo.dto.request.AuthRequestDto;
 import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
 import com.ecjtaneo.jwt_auth_demo.mapper.UserMapper;
 import com.ecjtaneo.jwt_auth_demo.model.User;
+import com.ecjtaneo.jwt_auth_demo.security.UserDetailsImpl;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AuthService {
-    UserService userService;
-    PasswordEncoder passwordEncoder;
+    private UserService userService;
+    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+    private JwtService jwtService;
 
-    public AuthService(UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthService(UserService userService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
-    public MessageResponse register(UserRegisterDto dto) {
+    public MessageResponse register(AuthRequestDto dto) {
         User user = UserMapper.toEntity(dto);
         user.setPassword(passwordEncoder.encode(dto.password()));
         userService.create(user);
@@ -25,4 +35,16 @@ public class AuthService {
         return new MessageResponse("Successfully registered.");
     }
 
+    public MessageResponse login(AuthRequestDto dto) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
+        Authentication authentication = authenticationManager.authenticate(token);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        String sub = userId.toString();
+
+        String jwt = jwtService.generate(sub);
+
+        return new MessageResponse(jwt);
+    }
 }
