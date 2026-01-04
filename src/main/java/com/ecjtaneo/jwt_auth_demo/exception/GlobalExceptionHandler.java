@@ -53,4 +53,10 @@ public class GlobalExceptionHandler {
         return new MessageResponse(ex.getMessage());
     }
 
+    @ExceptionHandler(RefreshTokenException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public MessageResponse handleRefreshTokenError(RefreshTokenException ex) {
+        return new MessageResponse(ex.getMessage());
+    }
+
 }

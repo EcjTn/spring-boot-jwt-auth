@@ -43,5 +43,10 @@ public class AuthController {
                 .body(new MessageResponse(loginResult.accessToken()));
     }
 
+    @GetMapping("/refresh")
+    public String refresh(@CookieValue(name = "refresh_token") String token) {
+        return token;
+    }
+
 
 }

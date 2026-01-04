@@ -5,11 +5,12 @@ import com.ecjtaneo.jwt_auth_demo.model.RefreshToken;
 import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.repository.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-
+@Service
 public class RefreshTokenService {
     private RefreshTokenRepository refreshTokenRepo;
 
