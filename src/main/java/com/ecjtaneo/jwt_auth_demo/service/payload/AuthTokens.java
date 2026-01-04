@@ -1,4 +1,4 @@
-package com.ecjtaneo.jwt_auth_demo.service.dto;
+package com.ecjtaneo.jwt_auth_demo.service.payload;
 
 public record AuthTokens(
         String accessToken,

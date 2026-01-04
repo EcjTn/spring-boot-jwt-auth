@@ -22,6 +22,8 @@ public class RefreshTokenService {
         refreshTokenRepo.save(refreshToken);
     }
 
+    //Recommended to hash the refresh token before storing it in db
+    //in case the db gets hacked, hackers cant use it to generate access tokens.
     public RefreshToken generate(User user) {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUser(user);

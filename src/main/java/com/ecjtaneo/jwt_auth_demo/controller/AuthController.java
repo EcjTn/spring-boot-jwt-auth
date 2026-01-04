@@ -3,7 +3,7 @@ package com.ecjtaneo.jwt_auth_demo.controller;
 import com.ecjtaneo.jwt_auth_demo.dto.request.AuthRequestDto;
 import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
 import com.ecjtaneo.jwt_auth_demo.service.AuthService;
-import com.ecjtaneo.jwt_auth_demo.service.dto.AuthTokens;
+import com.ecjtaneo.jwt_auth_demo.service.payload.AuthTokens;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -47,8 +47,8 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<MessageResponse> refresh(@CookieValue(name = "refresh_token") String token) {
-        AuthTokens tokens = authService.refresh(token);
+    public ResponseEntity<MessageResponse> refresh(@CookieValue(name = "refresh_token") String refreshToken) {
+        AuthTokens tokens = authService.refresh(refreshToken);
         ResponseCookie cookie = ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, tokens.refreshToken())
                 .httpOnly(true)
                 .secure(false)
