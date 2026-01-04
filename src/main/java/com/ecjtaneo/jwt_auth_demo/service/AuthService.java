@@ -6,8 +6,10 @@ import com.ecjtaneo.jwt_auth_demo.mapper.UserMapper;
 import com.ecjtaneo.jwt_auth_demo.model.RefreshToken;
 import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.repository.RefreshTokenRepository;
+import com.ecjtaneo.jwt_auth_demo.security.RefreshTokenService;
 import com.ecjtaneo.jwt_auth_demo.security.UserDetailsImpl;
-import jakarta.transaction.Transactional;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,20 +24,20 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtService jwtService;
-    private RefreshTokenRepository refreshTokenRepo;
+    private RefreshTokenService refreshTokenService;
 
     public AuthService(
             UserService userService,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
             JwtService jwtService,
-            RefreshTokenRepository refreshTokenRepo
+            RefreshTokenService refreshTokenService
     ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
-        this.refreshTokenRepo = refreshTokenRepo;
+        this.refreshTokenService = refreshTokenService;
     }
 
     public MessageResponse register(AuthRequestDto dto) {
@@ -46,7 +48,6 @@ public class AuthService {
         return new MessageResponse("Successfully registered.");
     }
 
-    @Transactional
     public MessageResponse login(AuthRequestDto dto) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         Authentication authentication = authenticationManager.authenticate(token);
@@ -56,13 +57,7 @@ public class AuthService {
         String sub = user.getId().toString();
 
         String jwt = jwtService.generate(sub);
-        String refreshToken = UUID.randomUUID().toString();
-
-        RefreshToken newRefreshToken = new RefreshToken();
-        newRefreshToken.setToken(refreshToken);
-        newRefreshToken.setUser(user);
-
-        refreshTokenRepo.save(newRefreshToken);
+        String refreshToken = refreshTokenService.generate(user).getToken();
 
         return new MessageResponse(jwt);
     }
