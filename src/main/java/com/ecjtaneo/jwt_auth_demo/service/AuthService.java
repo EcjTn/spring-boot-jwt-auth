@@ -7,6 +7,7 @@ import com.ecjtaneo.jwt_auth_demo.model.RefreshToken;
 import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.repository.RefreshTokenRepository;
 import com.ecjtaneo.jwt_auth_demo.security.UserDetailsImpl;
+import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,20 +22,20 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtService jwtService;
-    private RefreshTokenRepository refreshTokenRepository;
+    private RefreshTokenRepository refreshTokenRepo;
 
     public AuthService(
             UserService userService,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
             JwtService jwtService,
-            RefreshTokenRepository refreshTokenRepository
+            RefreshTokenRepository refreshTokenRepo
     ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
-        this.refreshTokenRepository = refreshTokenRepository;
+        this.refreshTokenRepo = refreshTokenRepo;
     }
 
     public MessageResponse register(AuthRequestDto dto) {
@@ -45,15 +46,23 @@ public class AuthService {
         return new MessageResponse("Successfully registered.");
     }
 
+    @Transactional
     public MessageResponse login(AuthRequestDto dto) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         Authentication authentication = authenticationManager.authenticate(token);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        Long userId = userDetails.getId();
-        String sub = userId.toString();
+        User user = userDetails.getUser();
+        String sub = user.getId().toString();
 
         String jwt = jwtService.generate(sub);
+        String refreshToken = UUID.randomUUID().toString();
+
+        RefreshToken newRefreshToken = new RefreshToken();
+        newRefreshToken.setToken(refreshToken);
+        newRefreshToken.setUser(user);
+
+        refreshTokenRepo.save(newRefreshToken);
 
         return new MessageResponse(jwt);
     }
