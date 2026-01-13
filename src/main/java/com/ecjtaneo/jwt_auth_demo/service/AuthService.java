@@ -24,23 +24,26 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     private JwtService jwtService;
     private RefreshTokenService refreshTokenService;
+    private UserMapper userMapper;
 
     public AuthService(
             UserService userService,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
             JwtService jwtService,
-            RefreshTokenService refreshTokenService
+            RefreshTokenService refreshTokenService,
+            UserMapper userMapper
     ) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.refreshTokenService = refreshTokenService;
+        this.userMapper = userMapper;
     }
 
     public MessageResponse register(AuthRequestDto dto) {
-        User user = UserMapper.toEntity(dto);
+        User user = userMapper.toEntity(dto);
         user.setPassword(passwordEncoder.encode(dto.password()));
         userService.create(user);
 

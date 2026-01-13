@@ -19,7 +19,7 @@ public class User {
 
     @Column(nullable = false)
     private String password;
-    private final LocalDateTime created_at = LocalDateTime.now();
+    private LocalDateTime created_at = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RefreshToken> refreshTokens;

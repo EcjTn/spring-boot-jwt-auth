@@ -1,6 +1,5 @@
 package com.ecjtaneo.jwt_auth_demo.service;
 
-import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
 import com.ecjtaneo.jwt_auth_demo.exception.ResourceConflictException;
 import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.repository.UserRepository;
