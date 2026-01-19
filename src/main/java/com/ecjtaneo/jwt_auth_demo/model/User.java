@@ -21,6 +21,6 @@ public class User {
     private String password;
     private LocalDateTime created_at = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<RefreshToken> refreshTokens;
 }
