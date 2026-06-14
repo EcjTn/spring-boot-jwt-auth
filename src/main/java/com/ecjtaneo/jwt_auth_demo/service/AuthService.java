@@ -8,6 +8,7 @@ import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.security.UserDetailsImpl;
 import com.ecjtaneo.jwt_auth_demo.service.payload.AuthTokens;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,29 +19,15 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
-    private UserService userService;
-    private PasswordEncoder passwordEncoder;
-    private AuthenticationManager authenticationManager;
-    private JwtService jwtService;
-    private RefreshTokenService refreshTokenService;
-    private UserMapper userMapper;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
+    private final UserMapper userMapper;
 
-    public AuthService(
-            UserService userService,
-            PasswordEncoder passwordEncoder,
-            AuthenticationManager authenticationManager,
-            JwtService jwtService,
-            RefreshTokenService refreshTokenService,
-            UserMapper userMapper
-    ) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
-        this.refreshTokenService = refreshTokenService;
-        this.userMapper = userMapper;
-    }
 
     public MessageResponse register(AuthRequest dto) {
         User user = userMapper.toEntity(dto);

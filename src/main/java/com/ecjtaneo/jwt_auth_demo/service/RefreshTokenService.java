@@ -5,18 +5,16 @@ import com.ecjtaneo.jwt_auth_demo.model.RefreshToken;
 import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.repository.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class RefreshTokenService {
-    private RefreshTokenRepository refreshTokenRepo;
-
-    public RefreshTokenService(RefreshTokenRepository refreshTokenRepo) {
-        this.refreshTokenRepo = refreshTokenRepo;
-    }
+    private final RefreshTokenRepository refreshTokenRepo;
 
     public void save(RefreshToken refreshToken) {
         refreshTokenRepo.save(refreshToken);

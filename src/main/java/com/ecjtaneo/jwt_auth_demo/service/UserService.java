@@ -4,20 +4,16 @@ import com.ecjtaneo.jwt_auth_demo.exception.ResourceConflictException;
 import com.ecjtaneo.jwt_auth_demo.model.User;
 import com.ecjtaneo.jwt_auth_demo.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private UserRepository userRepo;
-    private PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final UserRepository userRepo;
 
     @Transactional
     public User create(User user) {

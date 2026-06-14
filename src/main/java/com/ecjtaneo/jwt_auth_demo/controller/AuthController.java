@@ -6,6 +6,7 @@ import com.ecjtaneo.jwt_auth_demo.service.AuthService;
 import com.ecjtaneo.jwt_auth_demo.service.payload.AuthTokens;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -17,13 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
-    private AuthService authService;
+    private final AuthService authService;
     private final String REFRESH_TOKEN_COOKIE_NAME = "refresh_token";
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
