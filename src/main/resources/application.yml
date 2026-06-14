@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: jwt-auth-demo
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jwt-auth
+    username: postgres
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  jwt:
+  secret: thisIsMysecregtfrdesww233eggtffeeddgkjjhhtdhttebd54ndhdhfhhhshs8877465sbbdd

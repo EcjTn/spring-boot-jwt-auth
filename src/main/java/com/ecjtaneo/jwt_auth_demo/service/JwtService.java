@@ -13,6 +13,7 @@ import java.util.Date;
 
 @Service
 public class JwtService {
+    private final Date JWT_EXPIRY = new Date(System.currentTimeMillis() + 15 * 60 * 1000); //15 mins
 
     @Value("${spring.jwt.secret}")
     private String jwtKey;
@@ -24,13 +25,11 @@ public class JwtService {
     }
 
     public String generate(String sub) {
-        Date expiry = new Date(System.currentTimeMillis() + 15 * 60 * 1000); //15 mins
-
         return Jwts
                 .builder()
                 .signWith(secretKey)
                 .subject(sub)
-                .expiration(expiry)
+                .expiration(JWT_EXPIRY)
                 .compact();
     }
 

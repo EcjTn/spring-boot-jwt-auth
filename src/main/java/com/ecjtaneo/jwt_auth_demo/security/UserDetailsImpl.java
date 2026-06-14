@@ -1,6 +1,7 @@
 package com.ecjtaneo.jwt_auth_demo.security;
 
 import com.ecjtaneo.jwt_auth_demo.model.User;
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,12 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private User user;
-
-    public UserDetailsImpl(User user) {
-        this.user = user;
-    }
+    private final User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -30,9 +28,9 @@ public class UserDetailsImpl implements UserDetails {
         return user.getPassword();
     }
 
-    public Long getId() {
-        return user.getId();
-    }
+//    public Long getId() {
+//        return user.getId();
+//    }
 
     public User getUser() {
         return user;
