@@ -1,9 +1,9 @@
-package com.ecjtaneo.jwt_auth_demo.dto.request;
+package com.ecjtaneo.jwt_auth_demo.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record AuthRequestDto(
+public record AuthRequest(
         @NotBlank
         @Size(min = 5, max = 30)
         String username,

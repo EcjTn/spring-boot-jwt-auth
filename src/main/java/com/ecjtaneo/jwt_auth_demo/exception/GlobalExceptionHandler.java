@@ -1,12 +1,11 @@
 package com.ecjtaneo.jwt_auth_demo.exception;
 
-import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
+import com.ecjtaneo.jwt_auth_demo.dto.MessageResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;

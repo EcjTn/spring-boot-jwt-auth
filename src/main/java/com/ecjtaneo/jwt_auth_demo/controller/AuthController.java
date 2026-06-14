@@ -1,7 +1,7 @@
 package com.ecjtaneo.jwt_auth_demo.controller;
 
-import com.ecjtaneo.jwt_auth_demo.dto.request.AuthRequestDto;
-import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
+import com.ecjtaneo.jwt_auth_demo.dto.AuthRequest;
+import com.ecjtaneo.jwt_auth_demo.dto.MessageResponse;
 import com.ecjtaneo.jwt_auth_demo.service.AuthService;
 import com.ecjtaneo.jwt_auth_demo.service.payload.AuthTokens;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,12 +27,12 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponse register(@RequestBody @Valid AuthRequestDto dto) {
+    public MessageResponse register(@RequestBody @Valid AuthRequest dto) {
         return authService.register(dto);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MessageResponse> login (@RequestBody @Valid AuthRequestDto dto, HttpServletResponse response) {
+    public ResponseEntity<MessageResponse> login (@RequestBody @Valid AuthRequest dto, HttpServletResponse response) {
         AuthTokens tokens = authService.login(dto);
         ResponseCookie cookie = ResponseCookie.from(REFRESH_TOKEN_COOKIE_NAME, tokens.refreshToken())
                 .httpOnly(true)

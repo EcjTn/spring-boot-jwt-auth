@@ -21,6 +21,6 @@ public class User {
     private String password;
     private LocalDateTime created_at = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<RefreshToken> refreshTokens;
 }

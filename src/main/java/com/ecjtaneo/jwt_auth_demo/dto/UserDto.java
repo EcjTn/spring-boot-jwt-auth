@@ -1,4 +1,4 @@
-package com.ecjtaneo.jwt_auth_demo.dto.response;
+package com.ecjtaneo.jwt_auth_demo.dto;
 
 import java.time.LocalDateTime;
 

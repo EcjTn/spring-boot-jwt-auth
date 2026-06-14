@@ -1,7 +1,7 @@
 package com.ecjtaneo.jwt_auth_demo.service;
 
-import com.ecjtaneo.jwt_auth_demo.dto.request.AuthRequestDto;
-import com.ecjtaneo.jwt_auth_demo.dto.response.MessageResponse;
+import com.ecjtaneo.jwt_auth_demo.dto.AuthRequest;
+import com.ecjtaneo.jwt_auth_demo.dto.MessageResponse;
 import com.ecjtaneo.jwt_auth_demo.mapper.UserMapper;
 import com.ecjtaneo.jwt_auth_demo.model.RefreshToken;
 import com.ecjtaneo.jwt_auth_demo.model.User;
@@ -42,7 +42,7 @@ public class AuthService {
         this.userMapper = userMapper;
     }
 
-    public MessageResponse register(AuthRequestDto dto) {
+    public MessageResponse register(AuthRequest dto) {
         User user = userMapper.toEntity(dto);
         user.setPassword(passwordEncoder.encode(dto.password()));
         userService.create(user);
@@ -50,7 +50,7 @@ public class AuthService {
         return new MessageResponse("Successfully registered.");
     }
 
-    public AuthTokens login(AuthRequestDto dto) {
+    public AuthTokens login(AuthRequest dto) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(dto.username(), dto.password());
         Authentication authentication = authenticationManager.authenticate(token);
 
